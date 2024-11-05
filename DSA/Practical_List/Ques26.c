@@ -1,3 +1,11 @@
+// 26. Swap nodes of a linked list in pairs
+// Example 1:
+// input: 1 → 2 → 3 → 4
+// output: 2 → 1 → 4 → 3
+// Example 2:
+// input: 1 → 2 → 3
+// output: 2 → 1 → 3
+
 #include <stdio.h>
 #include <stdlib.h>
 
