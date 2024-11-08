@@ -13,7 +13,7 @@ struct Queue {
 struct MultipleQueues {
     int numQueues;      // Total number of queues
     int queueSize;      // Size of each queue
-    struct Queue *queues; // Array of Queue structures
+    struct Queue *queues;      // Array of Queue structures
 };
 
 // Function to initialize multiple queues
