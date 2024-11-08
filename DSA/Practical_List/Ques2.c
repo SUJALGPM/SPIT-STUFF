@@ -65,19 +65,21 @@ void infixToPostfix(char* infix, char* postfix) {
         if (isalnum(ch)) {  // Operand
             postfix[j++] = ch;
         }
-        else if (ch == '(') {  // Left parenthesis
+        else if (ch == ')') {  // right parenthesis
             push(ch);
         }
-        else if (ch == ')') {  // Right parenthesis
-            while (!isEmpty() && stack[top] != '(') {
+        else if (ch == '(') {  // left parenthesis
+            while (!isEmpty() && stack[top] != ')') {
                 postfix[j++] = pop();
             }
-            pop();  // Pop the '('
+            pop();  // Pop the ')'
         }
-        else {  // Operator
-            while (!isEmpty() && 
-                   ((isRightAssociative(ch) && precedence(stack[top]) > precedence(ch)) ||
-                    (!isRightAssociative(ch) && precedence(stack[top]) >= precedence(ch)))) {
+        else
+        {
+            while (!isEmpty() &&
+                   ((ch == '^' && precedence(stack[top]) > precedence(ch)) ||
+                    (ch != '^' && precedence(stack[top]) >= precedence(ch))))
+            {
                 postfix[j++] = pop();
             }
             push(ch);
@@ -94,16 +96,6 @@ void infixToPostfix(char* infix, char* postfix) {
 void infixToPrefix(char* infix, char* prefix) {
     // Step 1: Reverse the infix expression
     reverseString(infix);
-
-    // Step 2: Replace '(' with ')' and vice versa
-    for (int i = 0; infix[i] != '\0'; i++) {
-        if (infix[i] == '(') {
-            infix[i] = ')';
-        }
-        else if (infix[i] == ')') {
-            infix[i] = '(';
-        }
-    }
 
     // Step 3: Get postfix expression of modified infix
     char postfix[MAX];
