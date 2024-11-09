@@ -60,7 +60,7 @@ int precedence(char op)
 void infixToPostfix(char *infix, char *postfix)
 {
     int i = 0, j = 0;
-    char ch;
+    char ch;    
 
     while ((ch = infix[i++]) != '\0')
     {

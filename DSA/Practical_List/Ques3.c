@@ -1,19 +1,12 @@
-// 3. Write a program to maintain multiple queues in a single array.
-
 #include <stdio.h>
 #include <stdlib.h>
 
-struct Queue {
-    int front;
-    int back;
-    int size;
-    int *store;
-};
-
 struct MultipleQueues {
-    int numQueues;      // Total number of queues
-    int queueSize;      // Size of each queue
-    struct Queue *queues;      // Array of Queue structures
+    int *array;      // Array to store elements of all queues
+    int *front;      // Front indices for each queue
+    int *back;       // Back indices for each queue
+    int numQueues;   // Number of queues
+    int queueSize;   // Maximum size of each queue
 };
 
 // Function to initialize multiple queues
@@ -21,27 +14,27 @@ struct MultipleQueues* createMultipleQueues(int numQueues, int queueSize) {
     struct MultipleQueues *multiQueue = (struct MultipleQueues*)malloc(sizeof(struct MultipleQueues));
     multiQueue->numQueues = numQueues;
     multiQueue->queueSize = queueSize;
-    multiQueue->queues = (struct Queue*)malloc(numQueues * sizeof(struct Queue));
+    multiQueue->array = (int*)malloc(numQueues * queueSize * sizeof(int));
+    multiQueue->front = (int*)malloc(numQueues * sizeof(int));
+    multiQueue->back = (int*)malloc(numQueues * sizeof(int));
 
-    // Initialize each queue
+    // Initialize front and back for each queue
     for (int i = 0; i < numQueues; i++) {
-        multiQueue->queues[i].front = -1;
-        multiQueue->queues[i].back = -1;
-        multiQueue->queues[i].size = queueSize;
-        multiQueue->queues[i].store = (int*)malloc(queueSize * sizeof(int));
+        multiQueue->front[i] = -1;  // Empty state
+        multiQueue->back[i] = -1;
     }
 
     return multiQueue;
 }
 
 // Function to check if a specific queue is empty
-int isEmpty(struct Queue *queue) {
-    return queue->front == -1;
+int isEmpty(struct MultipleQueues *multiQueue, int queueIndex) {
+    return multiQueue->front[queueIndex] == -1;
 }
 
 // Function to check if a specific queue is full
-int isFull(struct Queue *queue) {
-    return (queue->back + 1) % queue->size == queue->front;
+int isFull(struct MultipleQueues *multiQueue, int queueIndex) {
+    return multiQueue->back[queueIndex] == multiQueue->queueSize - 1;
 }
 
 // Function to enqueue an element to a specific queue
@@ -51,19 +44,19 @@ void enqueue(struct MultipleQueues *multiQueue, int queueIndex, int value) {
         return;
     }
 
-    struct Queue *queue = &multiQueue->queues[queueIndex];
-
-    if (isFull(queue)) {
+    if (isFull(multiQueue, queueIndex)) {
         printf("Queue %d is full (overflow)..!!\n", queueIndex);
         return;
     }
-    
-    if (isEmpty(queue)) {
-        queue->front = 0;
+
+    int offset = queueIndex * multiQueue->queueSize;
+
+    if (isEmpty(multiQueue, queueIndex)) {
+        multiQueue->front[queueIndex] = 0;
     }
-    
-    queue->back = (queue->back + 1) % queue->size;
-    queue->store[queue->back] = value;
+
+    multiQueue->back[queueIndex]++;
+    multiQueue->array[offset + multiQueue->back[queueIndex]] = value;
     printf("Enqueued %d to queue %d.\n", value, queueIndex);
 }
 
@@ -74,22 +67,21 @@ void dequeue(struct MultipleQueues *multiQueue, int queueIndex) {
         return;
     }
 
-    struct Queue *queue = &multiQueue->queues[queueIndex];
-
-    if (isEmpty(queue)) {
+    if (isEmpty(multiQueue, queueIndex)) {
         printf("Queue %d is empty (underflow)..!!\n", queueIndex);
         return;
     }
-    
-    int deleteItem = queue->store[queue->front];
+
+    int offset = queueIndex * multiQueue->queueSize;
+    int deleteItem = multiQueue->array[offset + multiQueue->front[queueIndex]];
     printf("Dequeued item from queue %d: %d\n", queueIndex, deleteItem);
 
-    if (queue->front == queue->back) {
-        // Queue has only one element, so we reset it to empty
-        queue->front = -1;
-        queue->back = -1;
+    if (multiQueue->front[queueIndex] == multiQueue->back[queueIndex]) {
+        // Queue has only one element, so reset it to empty
+        multiQueue->front[queueIndex] = -1;
+        multiQueue->back[queueIndex] = -1;
     } else {
-        queue->front = (queue->front + 1) % queue->size;
+        multiQueue->front[queueIndex]++;
     }
 }
 
@@ -100,19 +92,15 @@ void traverseQueue(struct MultipleQueues *multiQueue, int queueIndex) {
         return;
     }
 
-    struct Queue *queue = &multiQueue->queues[queueIndex];
-
-    if (isEmpty(queue)) {
+    if (isEmpty(multiQueue, queueIndex)) {
         printf("Queue %d is empty..!!\n", queueIndex);
         return;
     }
 
+    int offset = queueIndex * multiQueue->queueSize;
     printf("Queue %d elements:\n", queueIndex);
-    int i = queue->front;
-    while (1) {
-        printf("%d ", queue->store[i]);
-        if (i == queue->back) break;
-        i = (i + 1) % queue->size;
+    for (int i = multiQueue->front[queueIndex]; i <= multiQueue->back[queueIndex]; i++) {
+        printf("%d ", multiQueue->array[offset + i]);
     }
     printf("\n");
 }
@@ -162,11 +150,10 @@ int main() {
         }
     } while (choice != 4);
 
-    // Free allocated memory for queues
-    for (int i = 0; i < numQueues; i++) {
-        free(multiQueue->queues[i].store);
-    }
-    free(multiQueue->queues);
+    // Free allocated memory
+    free(multiQueue->array);
+    free(multiQueue->front);
+    free(multiQueue->back);
     free(multiQueue);
 
     return 0;

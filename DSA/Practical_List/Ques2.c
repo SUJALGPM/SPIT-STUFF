@@ -97,11 +97,11 @@ void infixToPrefix(char* infix, char* prefix) {
     // Step 1: Reverse the infix expression
     reverseString(infix);
 
-    // Step 3: Get postfix expression of modified infix
+    // Step 2: Get postfix expression of modified infix
     char postfix[MAX];
     infixToPostfix(infix, postfix);
 
-    // Step 4: Reverse postfix to get prefix
+    // Step 3: Reverse postfix to get prefix
     reverseString(postfix);
 
     // Copy postfix to prefix
