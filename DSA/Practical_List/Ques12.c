@@ -21,23 +21,6 @@ void TraversedDoublyLinkedList(struct Node *head) {
     }
 }
 
-struct Node *InsertionAtBegin(struct Node *head) {
-    int value;
-    struct Node *newNode = (struct Node*)malloc(sizeof(struct Node));
-
-    printf("Enter value for new node:\n");
-    scanf("%d", &value);
-    newNode->data = value;
-
-    newNode->prev = NULL;
-    newNode->next = head;
-    if (head != NULL) {
-        head->prev = newNode;
-    }
-
-    return newNode;
-}
-
 struct Node *InsertionAtLast(struct Node *head) {
     int value;
     struct Node *temp = head;

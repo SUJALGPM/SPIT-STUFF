@@ -44,11 +44,11 @@ struct Node* insertNode(struct Node* head, int coefficient, int exponent) {
     return head;
 }
 
-// Function to multiply two polynomials
+// Function to multiply two polynomials...
 struct Node* multiplyPolynomials(struct Node* poly1, struct Node* poly2) {
     struct Node* result = NULL;
 
-    // Traverse both polynomials and multiply each term of poly1 with each term of poly2
+    // Traverse both polynomials and multiply each term of poly1 with each term of poly2...
     struct Node* p1 = poly1;
     while (p1 != NULL) {
         struct Node* p2 = poly2;

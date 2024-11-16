@@ -22,86 +22,44 @@ void TraversedDoublyLinkedList(struct Node *head) {
     }
 }
 
-struct Node *InsertionAtBegin(struct Node *head) {
-    int value;
-    struct Node *newNode = (struct Node*)malloc(sizeof(struct Node));
-
-    printf("Enter value for new node:\n");
-    scanf("%d", &value);
-    newNode->data = value;
-
-    newNode->prev = NULL;
-    newNode->next = head;
-    if (head != NULL) {
-        head->prev = newNode;
-    }
-
-    return newNode;
-}
-
-struct Node *InsertionAtLast(struct Node *head) {
-    int value;
+struct Node *InsertionAfterPosition(struct Node *head) {
+    int position, value, i = 0;
+    struct Node *newNode = (struct Node *)malloc(sizeof(struct Node));
     struct Node *temp = head;
-    struct Node *newNode = (struct Node*)malloc(sizeof(struct Node));
 
-    printf("Enter data for new node:\n");
+    printf("Enter the position after which to insert (starting from 1):\n");
+    scanf("%d", &position);
+    printf("Enter the value for the new node:\n");
     scanf("%d", &value);
 
     newNode->data = value;
-    newNode->next = NULL;
 
-    if (head == NULL) {
-        newNode->prev = NULL;
-        return newNode;
-    }
-
-    while(temp->next != NULL) {
-        temp = temp->next;
-    }
-
-    temp->next = newNode;
-    newNode->prev = temp;
-
-    return head;
-}
-
-struct Node *InsertionAtMiddle(struct Node *head) {
-    int value, index, i = 0;
-    struct Node *temp = head;
-    struct Node *newNode = (struct Node*)malloc(sizeof(struct Node));
-
-    printf("Enter data for new node:\n");
-    scanf("%d", &value);
-    printf("Enter the position to insert (starting from 1):\n");
-    scanf("%d", &index);
-
-    newNode->data = value;
-
-    if (index == 1) {
-        return InsertionAtBegin(head);
-    }
-
-    while (i < index - 2 && temp != NULL) {
+    // Traverse to the specified position
+    while (i < position - 1 && temp != NULL) {
         temp = temp->next;
         i++;
     }
 
-    if (temp == NULL || temp->next == NULL) {
-        printf("Position out of bounds. Inserting at the end.\n");
-        return InsertionAtLast(head);
+    // If position is out of bounds
+    if (temp == NULL) {
+        printf("Position out of bounds. Cannot insert.\n");
+        free(newNode);
+        return head;
     }
 
+    // Insert the new node
     newNode->next = temp->next;
     newNode->prev = temp;
+
     if (temp->next != NULL) {
         temp->next->prev = newNode;
     }
     temp->next = newNode;
 
+    printf("Node inserted successfully after position %d.\n", position);
     return head;
 }
 
-// Function to sort the doubly linked list
 struct Node *SortDoublyLinkedList(struct Node *head) {
     if (head == NULL) return NULL;
 
@@ -161,11 +119,9 @@ int main() {
     do {
         printf("\nMenu:\n");
         printf("1. Display the list\n");
-        printf("2. Insert at the beginning\n");
-        printf("3. Insert at the end\n");
-        printf("4. Insert at a specific position\n");
-        printf("5. Sort the list\n");
-        printf("6. Exit\n");
+        printf("2. Insert at a specific position\n");
+        printf("3. Sort the list\n");
+        printf("4. Exit\n");
         printf("Enter your choice: ");
         scanf("%d", &choice);
 
@@ -174,28 +130,20 @@ int main() {
                 TraversedDoublyLinkedList(head);
                 break;
             case 2:
-                head = InsertionAtBegin(head);
+                head = InsertionAfterPosition(head);
                 TraversedDoublyLinkedList(head);
                 break;
             case 3:
-                head = InsertionAtLast(head);
-                TraversedDoublyLinkedList(head);
-                break;
-            case 4:
-                head = InsertionAtMiddle(head);
-                TraversedDoublyLinkedList(head);
-                break;
-            case 5:
                 head = SortDoublyLinkedList(head);
                 TraversedDoublyLinkedList(head);
                 break;
-            case 6:
+            case 4:
                 printf("Exiting the program.\n");
                 break;
             default:
                 printf("Invalid choice. Please try again.\n");
         }
-    } while (choice != 6);
+    } while (choice != 5);
 
     return 0;
 }
