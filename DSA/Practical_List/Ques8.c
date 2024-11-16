@@ -15,7 +15,7 @@ struct ListNode {
 struct ListNode* createNode(int value) {
     struct ListNode* newNode = (struct ListNode*)malloc(sizeof(struct ListNode));
     newNode->val = value;
-    newNode->next = NULL;  // explicitly setting next to NULL
+    newNode->next = NULL;  
     return newNode;
 }
 

@@ -6,6 +6,7 @@
 // input: 1 → 2 → 3
 // output: 2 → 1 → 3
 
+
 #include <stdio.h>
 #include <stdlib.h>
 

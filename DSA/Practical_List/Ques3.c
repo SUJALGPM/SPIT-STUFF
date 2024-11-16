@@ -9,7 +9,7 @@ struct MultipleQueues {
     int queueSize;   // Maximum size of each queue
 };
 
-// Function to initialize multiple queues
+// Function to initialize multiple queues...
 struct MultipleQueues* createMultipleQueues(int numQueues, int queueSize) {
     struct MultipleQueues *multiQueue = (struct MultipleQueues*)malloc(sizeof(struct MultipleQueues));
     multiQueue->numQueues = numQueues;
@@ -18,9 +18,9 @@ struct MultipleQueues* createMultipleQueues(int numQueues, int queueSize) {
     multiQueue->front = (int*)malloc(numQueues * sizeof(int));
     multiQueue->back = (int*)malloc(numQueues * sizeof(int));
 
-    // Initialize front and back for each queue
+    // Initialize front and back for each queue...
     for (int i = 0; i < numQueues; i++) {
-        multiQueue->front[i] = -1;  // Empty state
+        multiQueue->front[i] = -1;
         multiQueue->back[i] = -1;
     }
 
@@ -68,7 +68,7 @@ void dequeue(struct MultipleQueues *multiQueue, int queueIndex) {
     }
 
     if (isEmpty(multiQueue, queueIndex)) {
-        printf("Queue %d is empty (underflow)..!!\n", queueIndex);
+        printf("Queue %d is empty (underflow)..!!\n", queueIndex);  
         return;
     }
 

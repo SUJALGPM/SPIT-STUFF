@@ -3,7 +3,6 @@
 // ● Given 1→1 → 2, return 1 → 2
 // ● Given 1 → 1 → 2 → 3 → 3, return 1 → 2 → 3
 
-
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -22,20 +21,23 @@ struct ListNode* createNode(int value) {
 
 // Function to delete duplicates in a sorted linked list
 struct ListNode* deleteDuplicates(struct ListNode* head) {
-    struct ListNode* current = head;
-    
-    while (current != NULL && current->next != NULL) {
-        if (current->val == current->next->val) {
-            // Duplicate found, remove the next node
-            struct ListNode* temp = current->next;
-            current->next = current->next->next;
-            free(temp);
-        } else {
-            // Move to the next node if no duplicate
-            current = current->next;
-        }
+    if (head == NULL) {
+        return NULL;
     }
     
+    struct ListNode* p = head;
+    struct ListNode* q = head->next;
+    
+    while (q != NULL) {
+        if (p->val != q->val) {
+            p = q;
+            q = q->next;
+        } else {
+            p->next = q->next;
+            free(q);
+            q = p->next;
+        }
+    }
     return head;
 }
 
