@@ -3,76 +3,90 @@
 // a. List 1 → 2 → 1 is a palindrome.
 // b. List 1 → 2 → 3 is not a palindrome.
 
+
 #include <stdio.h>
 #include <stdlib.h>
 
-struct ListNode {
-    int val;
-    struct ListNode* next;
+struct Node {
+    int data;
+    struct Node* next;
 };
 
 // Function to create a new node
-struct ListNode* createNode(int value) {
-    struct ListNode* newNode = (struct ListNode*)malloc(sizeof(struct ListNode));
-    newNode->val = value;
-    newNode->next = NULL;  
+struct Node* createNode(int value) {
+    struct Node* newNode = (struct Node*)malloc(sizeof(struct Node));
+    if (!newNode) {
+        printf("Memory allocation failed\n");
+        exit(1);
+    }
+    newNode->data = value;
+    newNode->next = NULL;
     return newNode;
 }
 
-// Function to reverse the linked list
-struct ListNode* reverseList(struct ListNode* head) {
-    struct ListNode* prev = NULL;
-    struct ListNode* curr = head;
-    struct ListNode* next = NULL;
-    
-    while (curr != NULL) {
-        next = curr->next;
-        curr->next = prev;
-        prev = curr;
-        curr = next;
-    }
-    return prev;
-}
-
 // Function to check if the linked list is a palindrome
-int isPalindrome(struct ListNode* head) {
+int isPalindrome(struct Node* head) {
     if (!head || !head->next) return 1;
 
-    // Step 1: Find the middle of the linked list
-    struct ListNode* slow = head;
-    struct ListNode* fast = head;
-    while (fast != NULL && fast->next != NULL) {
-        slow = slow->next;
-        fast = fast->next->next;
+    // Step 1: Create a reversed copy of the linked list
+    struct Node* reversedHead = NULL;
+    struct Node* temp = head;
+    while (temp != NULL) {
+        struct Node* newNode = createNode(temp->data);
+        newNode->next = reversedHead;
+        reversedHead = newNode;
+        temp = temp->next;
     }
 
-    // Step 2: Reverse the second half
-    struct ListNode* secondHalf = reverseList(slow);
-
-    // Step 3: Compare the two halves
-    struct ListNode* firstHalf = head;
-    struct ListNode* secondHalfCopy = secondHalf;  // To restore the list later if needed
-    while (secondHalf != NULL) {
-        if (firstHalf->val != secondHalf->val) {
-            reverseList(secondHalfCopy);  // Restore list before returning
+    // Step 2: Compare the original and reversed lists node by node
+    struct Node* original = head;
+    struct Node* reversed = reversedHead;
+    while (original != NULL && reversed != NULL) {
+        if (original->data != reversed->data) {
+            // Free the reversed list before returning
+            while (reversedHead != NULL) {
+                struct Node* del = reversedHead;
+                reversedHead = reversedHead->next;
+                free(del);
+            }
             return 0;
         }
-        firstHalf = firstHalf->next;
-        secondHalf = secondHalf->next;
+        original = original->next;
+        reversed = reversed->next;
     }
 
-    // (Optional) Step 4: Restore the second half back
-    reverseList(secondHalfCopy);
+    // Free the reversed list
+    while (reversedHead != NULL) {
+        struct Node* del = reversedHead;
+        reversedHead = reversedHead->next;
+        free(del);
+    }
 
     return 1;
 }
 
 int main() {
-    // Create linked list 1->2->2->1
-    struct ListNode* head = createNode(1);
-    head->next = createNode(2);
-    head->next->next = createNode(2);
-    head->next->next->next = createNode(1);
+    int noOfNodes, value;
+    struct Node* head = NULL;
+    struct Node* newNode = NULL;
+    struct Node* temp = NULL;
+
+    printf("Enter how many nodes you want: ");
+    scanf("%d", &noOfNodes);
+
+    for (int i = 0; i < noOfNodes; i++) {
+        printf("Enter data for your node: ");
+        scanf("%d", &value);
+
+        newNode = createNode(value);
+
+        if (head == NULL) {
+            head = newNode;
+        } else {
+            temp->next = newNode;
+        }
+        temp = newNode;
+    }
 
     // Check if it's a palindrome
     if (isPalindrome(head)) {
@@ -82,7 +96,6 @@ int main() {
     }
 
     // Free the list memory
-    struct ListNode* temp;
     while (head != NULL) {
         temp = head;
         head = head->next;
