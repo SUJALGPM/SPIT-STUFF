@@ -95,12 +95,5 @@ int main() {
         printf("The linked list is not a palindrome.\n");
     }
 
-    // Free the list memory
-    while (head != NULL) {
-        temp = head;
-        head = head->next;
-        free(temp);
-    }
-
     return 0;
 }
