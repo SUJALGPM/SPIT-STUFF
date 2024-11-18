@@ -159,15 +159,15 @@ int main(){
         }
             break;
         case 2:
-            printf("Preordered traversed..\n");
+            printf("Preorder traversal..\n");
             Preorder(root);
             break;
         case 3:
-            printf("Postordered traversed..\n");
+            printf("Postorder traversal..\n");
             Postorder(root);
             break;
         case 4:
-            printf("Inordered Traversed..\n");
+            printf("Inorder Traversal..\n");
             InOrder(root);
             break;
         case 5:
