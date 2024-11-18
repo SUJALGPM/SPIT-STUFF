@@ -6,30 +6,30 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-struct ListNode {
-    int val;
-    struct ListNode* next;
+struct Node {
+    int data;
+    struct Node* next;
 };
 
 // Function to create a new node
-struct ListNode* createNode(int value) {
-    struct ListNode* newNode = (struct ListNode*)malloc(sizeof(struct ListNode));
-    newNode->val = value;
+struct Node* createNode(int value) {
+    struct Node* newNode = (struct Node*)malloc(sizeof(struct Node));
+    newNode->data = value;
     newNode->next = NULL;
     return newNode;
 }
 
 // Function to delete duplicates in a sorted linked list
-struct ListNode* deleteDuplicates(struct ListNode* head) {
+struct Node* deleteDuplicates(struct Node* head) {
     if (head == NULL) {
         return NULL;
     }
     
-    struct ListNode* p = head;
-    struct ListNode* q = head->next;
+    struct Node* p = head;
+    struct Node* q = head->next;
     
     while (q != NULL) {
-        if (p->val != q->val) {
+        if (p->data != q->data) {
             p = q;
             q = q->next;
         } else {
@@ -42,31 +42,37 @@ struct ListNode* deleteDuplicates(struct ListNode* head) {
 }
 
 // Function to print the linked list
-void printList(struct ListNode* head) {
+void printList(struct Node* head) {
     while (head != NULL) {
-        printf("%d -> ", head->val);
+        printf("%d -> ", head->data);
         head = head->next;
     }
     printf("NULL\n");
 }
 
-// Free the linked list memory
-void freeList(struct ListNode* head) {
-    struct ListNode* temp;
-    while (head != NULL) {
-        temp = head;
-        head = head->next;
-        free(temp);
-    }
-}
-
 int main() {
-    // Create a sorted linked list 1 -> 1 -> 2 -> 3 -> 3
-    struct ListNode* head = createNode(1);
-    head->next = createNode(1);
-    head->next->next = createNode(2);
-    head->next->next->next = createNode(3);
-    head->next->next->next->next = createNode(3);
+    int noOfNodes, value;
+    struct Node* head = NULL;
+    struct Node* newNode = NULL;
+    struct Node* temp = NULL;
+    
+    printf("Enter no of nodes:\n");
+    scanf("%d", &noOfNodes);
+    
+    for (int i = 0; i < noOfNodes; i++) {
+        printf("Enter data for your node: ");
+        scanf("%d", &value);
+        
+        newNode = createNode(value); 
+        
+        if (head == NULL) {
+            head = newNode;
+        } else {
+            temp->next = newNode;
+        }
+        
+        temp = newNode;
+    }
     
     printf("Original list:\n");
     printList(head);
@@ -75,9 +81,6 @@ int main() {
     head = deleteDuplicates(head);
     printf("\nList after removing duplicates:\n");
     printList(head);
-
-    // Free the list memory
-    freeList(head);
 
     return 0;
 }

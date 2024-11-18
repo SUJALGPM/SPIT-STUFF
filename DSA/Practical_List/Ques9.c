@@ -94,6 +94,8 @@ void printPolynomial(struct Node* poly) {
     printf("\n");
 }
 
+
+
 // Main function
 int main() {
     struct Node* poly1 = NULL;
