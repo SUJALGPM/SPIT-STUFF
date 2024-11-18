@@ -5,30 +5,29 @@
 // ● Input: 1 → 5 → 3 → 2 → 4 → 2 and x = 3
 // ● Output: 1 → 2 → 2 → 3 → 5 → 4
 
-
 #include <stdio.h>
 #include <stdlib.h>
 
-struct ListNode {
-    int val;
-    struct ListNode* next;
+struct Node {
+    int data;
+    struct Node* next;
 };
 
 // Function to create a new node
-struct ListNode* createNode(int value) {
-    struct ListNode* newNode = (struct ListNode*)malloc(sizeof(struct ListNode));
-    newNode->val = value;
+struct Node* createNode(int value) {
+    struct Node* newNode = (struct Node*)malloc(sizeof(struct Node));
+    newNode->data = value;
     newNode->next = NULL;
     return newNode;
 }
 
 // Function to partition the list around value x
-struct ListNode* partition(struct ListNode* head, int x) {
-    struct ListNode* lessHead = NULL, *lessTail = NULL;
-    struct ListNode* greaterHead = NULL, *greaterTail = NULL;
+struct Node* partition(struct Node* head, int x) {
+    struct Node* lessHead = NULL, *lessTail = NULL;
+    struct Node* greaterHead = NULL, *greaterTail = NULL;
     
     while (head != NULL) {
-        if (head->val < x) {
+        if (head->data < x) {
             // Insert into the 'less than x' list
             if (lessHead == NULL) {
                 lessHead = lessTail = head;
@@ -61,44 +60,49 @@ struct ListNode* partition(struct ListNode* head, int x) {
 }
 
 // Function to print the linked list
-void printList(struct ListNode* head) {
+void printList(struct Node* head) {
     while (head != NULL) {
-        printf("%d -> ", head->val);
+        printf("%d -> ", head->data);
         head = head->next;
     }
     printf("NULL\n");
 }
 
-// Free the linked list memory
-void freeList(struct ListNode* head) {
-    struct ListNode* temp;
-    while (head != NULL) {
-        temp = head;
-        head = head->next;
-        free(temp);
-    }
-}
-
 int main() {
-    // Create the linked list 1 -> 5 -> 3 -> 2 -> 4 -> 2
-    struct ListNode* head = createNode(1);
-    head->next = createNode(5);
-    head->next->next = createNode(3);
-    head->next->next->next = createNode(2);
-    head->next->next->next->next = createNode(4);
-    head->next->next->next->next->next = createNode(2);
+    int noOfNodes, value;
+    struct Node* head = NULL;
+    struct Node* newNode = NULL;
+    struct Node* temp = NULL;
     
-    int x = 3;
+    printf("Enter number of nodes:\n");
+    scanf("%d", &noOfNodes);
+    
+    for (int i = 0; i < noOfNodes; i++) {
+        printf("Enter data for your node: ");
+        scanf("%d", &value);
+        
+        newNode = createNode(value); 
+        
+        if (head == NULL) {
+            head = newNode;
+        } else {
+            temp->next = newNode;
+        }
+        
+        temp = newNode;
+    }
+    
+    int x;
+    printf("Enter the value of x to partition the list: ");
+    scanf("%d", &x);
+    
     printf("Original list:\n");
     printList(head);
     
     // Partition the list around x
-    struct ListNode* partitionedHead = partition(head, x);
+    struct Node* partitionedHead = partition(head, x);
     printf("\nPartitioned list around %d:\n", x);
     printList(partitionedHead);
-
-    // Free the partitioned list
-    freeList(partitionedHead);
 
     return 0;
 }
