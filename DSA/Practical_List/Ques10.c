@@ -22,22 +22,38 @@ struct Node* createNode(int coefficient, int exponent) {
 
 // Function to insert a node into the polynomial in decreasing order of exponents
 struct Node* insertNode(struct Node* head, int coefficient, int exponent) {
+    if (coefficient == 0) {
+        return head; // Skip zero coefficient terms
+    }
+
     struct Node* newNode = createNode(coefficient, exponent);
 
-    // Case 1: Insert at the beginning if the list is empty or exponent is the largest
+    // Case 1: Insert at the beginning or if list is empty
     if (head == NULL || head->exponent < exponent) {
         newNode->next = head;
         head = newNode;
         return head;
     }
 
-    // Case 2: Traverse and find the correct position
     struct Node* current = head;
+
+    // Case 2: Traverse to find the correct position or matching exponent
     while (current->next != NULL && current->next->exponent > exponent) {
         current = current->next;
     }
-    
-    // Insert the new node at the correct position
+
+    // Case 3: Combine terms with the same exponent
+    if (current->next != NULL && current->next->exponent == exponent) {
+        current->next->coefficient += coefficient;
+        if (current->next->coefficient == 0) { // Remove zero coefficient terms
+            struct Node* temp = current->next;
+            current->next = temp->next;
+            free(temp);
+        }
+        return head;
+    }
+
+    // Case 4: Insert at the correct position
     newNode->next = current->next;
     current->next = newNode;
 
@@ -48,7 +64,6 @@ struct Node* insertNode(struct Node* head, int coefficient, int exponent) {
 struct Node* multiplyPolynomials(struct Node* poly1, struct Node* poly2) {
     struct Node* result = NULL;
 
-    // Traverse both polynomials and multiply each term of poly1 with each term of poly2...
     struct Node* p1 = poly1;
     while (p1 != NULL) {
         struct Node* p2 = poly2;
@@ -63,6 +78,7 @@ struct Node* multiplyPolynomials(struct Node* poly1, struct Node* poly2) {
 
     return result;
 }
+
 
 // Function to print a polynomial
 void printPolynomial(struct Node* poly) {
