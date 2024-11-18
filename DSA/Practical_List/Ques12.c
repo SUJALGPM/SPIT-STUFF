@@ -2,6 +2,7 @@
 // a. Insert (end)
 // b. concatenate two lists
 // c. display
+
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -23,7 +24,7 @@ void TraversedDoublyLinkedList(struct Node *head) {
 struct Node *InsertionAtLast(struct Node *head) {
     int value;
     struct Node *temp = head;
-    struct Node *newNode = (struct Node *)malloc(sizeof(struct Node));
+    struct Node *newNode = (struct Node *)malloc(sizeof(struct Node));  
 
     printf("Enter data for new node:\n");
     scanf("%d", &value);
