@@ -15,6 +15,14 @@ struct Node{
     struct Node* next;
 };
 
+// Function to create a new node
+struct Node* createNode(int value) {
+    struct Node* newNode = (struct Node*)malloc(sizeof(struct Node));
+    newNode->data = value;
+    newNode->next = NULL;
+    return newNode;
+}
+
 void printLinkedList(struct Node *head){
     printf("Traversed Linked list...\n");
     while(head != NULL){
@@ -41,33 +49,27 @@ void adjacentPairSwap(struct Node* head){
 }
 
 int main(){
-    int noOfNodes,value;
-    struct Node *head = NULL;
-    struct Node *newNode = NULL;
-    struct Node *temp = NULL;
-
-
-    printf("Enter how many nodes you want : \n");
-    scanf("%d",&noOfNodes);
+    int noOfNodes, value;
+    struct Node* head = NULL;
+    struct Node* newNode = NULL;
+    struct Node* temp = NULL;
     
-    for(int i=0;i<noOfNodes;i++){
-        newNode = (struct Node*)malloc(sizeof(struct Node));
-
-        printf("Enter data for your node :\n");
-        scanf("%d",&value);
-
-        newNode->data = value;
-        newNode->next = NULL;
-
-        if (head == NULL)
-        {
+    printf("Enter number of nodes:\n");
+    scanf("%d", &noOfNodes);
+    
+    for (int i = 0; i < noOfNodes; i++) {
+        printf("Enter data for your node: ");
+        scanf("%d", &value);
+        
+        newNode = createNode(value); 
+        
+        if (head == NULL) {
             head = newNode;
-        }else{
+        } else {
             temp->next = newNode;
         }
-
-        temp = newNode;
         
+        temp = newNode;
     }
 
     printLinkedList(head);

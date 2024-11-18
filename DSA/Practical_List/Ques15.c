@@ -73,8 +73,8 @@ struct Node *DeleteNode(struct Node* root, int key){
     }
 
     //search in subtree..
-    if(key < root->key){
-        root->left = DeleteNode(root->left,key);
+    if(key < root->key){ //20 < 30
+        root->left = DeleteNode(root->left,key); // 30,20
     }else if(key > root->key){
         root->right = DeleteNode(root->right,key);
     }else{
