@@ -2,25 +2,24 @@
 // Example 1: input: 1 → 2 → 3 → 4 → 5 , k = 1 output: 5 → 1 → 2 → 3 → 4 
 // Example 2: input: 1 → 2 → 3 → 4 → 5 , k = 2 output: 4 → 5 → 1 → 2 → 3
 
-
 #include <stdio.h>
 #include <stdlib.h>
 
-struct ListNode {
+struct Node {
     int val;
-    struct ListNode* next;
+    struct Node* next;
 };
 
 // Function to create a new node
-struct ListNode* createNode(int value) {
-    struct ListNode* newNode = (struct ListNode*)malloc(sizeof(struct ListNode));
+struct Node* createNode(int value) {
+    struct Node* newNode = (struct Node*)malloc(sizeof(struct Node));
     newNode->val = value;
     newNode->next = NULL;
     return newNode;
 }
 
 // Function to calculate the length of the linked list
-int getLength(struct ListNode* head) {
+int getLength(struct Node* head) {
     int length = 0;
     while (head != NULL) {
         length++;
@@ -30,7 +29,7 @@ int getLength(struct ListNode* head) {
 }
 
 // Function to rotate the linked list by k places
-struct ListNode* rotateList(struct ListNode* head, int k) {
+struct Node* rotateList(struct Node* head, int k) {
     if (head == NULL || head->next == NULL || k == 0) {
         return head; // No rotation needed
     }
@@ -43,18 +42,18 @@ struct ListNode* rotateList(struct ListNode* head, int k) {
     }
 
     // Find the new tail (length - k - 1) and new head (length - k)
-    struct ListNode* current = head;
+    struct Node* current = head;
     int stepsToNewHead = length - k - 1;
     for (int i = 0; i < stepsToNewHead; i++) {
         current = current->next;
     }
 
     // New head and tail adjustments
-    struct ListNode* newHead = current->next;
+    struct Node* newHead = current->next;
     current->next = NULL;
 
     // Find the old tail and connect it to the old head
-    struct ListNode* tail = newHead;
+    struct Node* tail = newHead;
     while (tail->next != NULL) {
         tail = tail->next;
     }
@@ -64,7 +63,7 @@ struct ListNode* rotateList(struct ListNode* head, int k) {
 }
 
 // Function to print the linked list
-void printList(struct ListNode* head) {
+void printList(struct Node* head) {
     while (head != NULL) {
         printf("%d -> ", head->val);
         head = head->next;
@@ -72,36 +71,43 @@ void printList(struct ListNode* head) {
     printf("NULL\n");
 }
 
-// Free the linked list memory
-void freeList(struct ListNode* head) {
-    struct ListNode* temp;
-    while (head != NULL) {
-        temp = head;
-        head = head->next;
-        free(temp);
-    }
-}
-
 int main() {
-    // Create a linked list 1 -> 2 -> 3 -> 4 -> 5
-    struct ListNode* head = createNode(1);
-    head->next = createNode(2);
-    head->next->next = createNode(3);
-    head->next->next->next = createNode(4);
-    head->next->next->next->next = createNode(5);
+    int noOfNodes, value, k;
+    struct Node* head = NULL;
+    struct Node* newNode = NULL;
+    struct Node* temp = NULL;
+    
+    // Take input for the linked list
+    printf("Enter number of nodes: ");
+    scanf("%d", &noOfNodes);
+    
+    for (int i = 0; i < noOfNodes; i++) {
+        printf("Enter data for node %d: ", i + 1);
+        scanf("%d", &value);
+        
+        newNode = createNode(value); 
+        
+        if (head == NULL) {
+            head = newNode;
+        } else {
+            temp->next = newNode;
+        }
+        
+        temp = newNode;
+    }
 
-    int k = 2; // Rotate by k places
+    // Take input for rotation
+    printf("Enter the number of places to rotate: ");
+    scanf("%d", &k);
 
-    printf("Original list:\n");
+    // Print the original list
+    printf("\nOriginal list:\n");
     printList(head);
 
     // Rotate the list
     head = rotateList(head, k);
     printf("\nList after rotating by %d places:\n", k);
     printList(head);
-
-    // Free the list memory
-    freeList(head);
 
     return 0;
 }
