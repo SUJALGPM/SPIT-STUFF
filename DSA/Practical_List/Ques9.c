@@ -94,34 +94,73 @@ void printPolynomial(struct Node* poly) {
     printf("\n");
 }
 
+// Function to dynamically input a polynomial
+struct Node* inputPolynomial() {
+    struct Node* poly = NULL;
+    int coefficient, exponent;
 
+    printf("Enter terms of the polynomial (enter -1 -1 to stop):\n");
+    while (1) {
+        printf("Enter coefficient and exponent: ");
+        scanf("%d %d", &coefficient, &exponent);
+
+        if (coefficient == -1 && exponent == -1) break;
+
+        poly = insertNode(poly, coefficient, exponent);
+    }
+
+    return poly;
+}
 
 // Main function
 int main() {
     struct Node* poly1 = NULL;
     struct Node* poly2 = NULL;
+    struct Node* result = NULL;
 
-    // Create first polynomial: 5x^3 + 4x^2 + 2x
-    poly1 = insertNode(poly1, 5, 3);
-    poly1 = insertNode(poly1, 4, 2);
-    poly1 = insertNode(poly1, 2, 1);
+    int choice;
 
-    // Create second polynomial: 3x^3 + x^2 + 6
-    poly2 = insertNode(poly2, 3, 3);
-    poly2 = insertNode(poly2, 1, 2);
-    poly2 = insertNode(poly2, 6, 0);
+    do {
+        printf("\nMenu:\n");
+        printf("1. Input first polynomial\n");
+        printf("2. Input second polynomial\n");
+        printf("3. Print first polynomial\n");
+        printf("4. Print second polynomial\n");
+        printf("5. Add polynomials\n");
+        printf("6. Exit\n");
+        printf("Enter your choice: ");
+        scanf("%d", &choice);
 
-    // Print the polynomials
-    printf("First Polynomial: ");
-    printPolynomial(poly1);
+        switch (choice) {
+            case 1:
+                printf("Input the first polynomial:\n");
+                poly1 = inputPolynomial();
+                break;
+            case 2:
+                printf("Input the second polynomial:\n");
+                poly2 = inputPolynomial();
+                break;
+            case 3:
+                printf("First Polynomial: ");
+                printPolynomial(poly1);
+                break;
+            case 4:
+                printf("Second Polynomial: ");
+                printPolynomial(poly2);
+                break;
+            case 5:
+                result = addPolynomials(poly1, poly2);
+                printf("Resultant Polynomial: ");
+                printPolynomial(result);
+                break;
+            case 6:
+                printf("Exiting program...\n");
+                break;
+            default:
+                printf("Invalid choice. Please try again.\n");
+        }
+    } while (choice != 6);
 
-    printf("Second Polynomial: ");
-    printPolynomial(poly2);
-
-    // Add the two polynomials
-    struct Node* result = addPolynomials(poly1, poly2);
-    printf("Resultant Polynomial: ");
-    printPolynomial(result);
 
     return 0;
 }
