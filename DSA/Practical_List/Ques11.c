@@ -73,7 +73,7 @@ struct Node *SortDoublyLinkedList(struct Node *head) {
 
         while (ptr->next != last) {
             if (ptr->data > ptr->next->data) {
-                // Swap the data of the nodes
+                // Swap the d   ata of the nodes
                 int temp = ptr->data;
                 ptr->data = ptr->next->data;
                 ptr->next->data = temp;
