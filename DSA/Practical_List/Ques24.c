@@ -11,24 +11,24 @@
 #include <stdlib.h>
 
 // Definition for singly-linked list
-struct ListNode {
+struct Node {
     int val;
-    struct ListNode *next;
+    struct Node* next;
 };
 
 // Function to create a new node
-struct ListNode* createNode(int value) {
-    struct ListNode* newNode = (struct ListNode*)malloc(sizeof(struct ListNode));
+struct Node* createNode(int value) {
+    struct Node* newNode = (struct Node*)malloc(sizeof(struct Node));
     newNode->val = value;
     newNode->next = NULL;
     return newNode;
 }
 
 // Function to reverse a linked list
-struct ListNode* reverseList(struct ListNode* head) {
-    struct ListNode* prev = NULL;
-    struct ListNode* current = head;
-    struct ListNode* next = NULL;
+struct Node* reverseList(struct Node* head) {
+    struct Node* prev = NULL;
+    struct Node* current = head;
+    struct Node* next = NULL;
     while (current) {
         next = current->next;
         current->next = prev;
@@ -39,12 +39,12 @@ struct ListNode* reverseList(struct ListNode* head) {
 }
 
 // Function to add two numbers represented by linked lists
-struct ListNode* addTwoNumbers(struct ListNode* l1, struct ListNode* l2) {
+struct Node* addTwoNumbers(struct Node* l1, struct Node* l2) {
     l1 = reverseList(l1);
     l2 = reverseList(l2);
 
-    struct ListNode* dummyHead = createNode(0);
-    struct ListNode* current = dummyHead;
+    struct Node* dummyHead = createNode(0);
+    struct Node* current = dummyHead;
     int carry = 0;
 
     while (l1 || l2 || carry) {
@@ -57,13 +57,13 @@ struct ListNode* addTwoNumbers(struct ListNode* l1, struct ListNode* l2) {
         if (l2) l2 = l2->next;
     }
 
-    struct ListNode* result = reverseList(dummyHead->next);
+    struct Node* result = reverseList(dummyHead->next);
     free(dummyHead);
     return result;
 }
 
 // Function to print a linked list
-void printList(struct ListNode* head) {
+void printList(struct Node* head) {
     while (head) {
         printf("%d", head->val);
         if (head->next) printf(" → ");
@@ -72,29 +72,54 @@ void printList(struct ListNode* head) {
     printf("\n");
 }
 
-// Example usage
+// Function to dynamically create a linked list
+struct Node* createLinkedList() {
+    int noOfNodes, value;
+    struct Node* head = NULL;
+    struct Node* newNode = NULL;
+    struct Node* temp = NULL;
+
+    printf("Enter the number of nodes: ");
+    scanf("%d", &noOfNodes);
+
+    for (int i = 0; i < noOfNodes; i++) {
+        printf("Enter data for node %d: ", i + 1);
+        scanf("%d", &value);
+
+        newNode = createNode(value);
+        if (head == NULL) {
+            head = newNode;
+        } else {
+            temp->next = newNode;
+        }
+        temp = newNode;
+    }
+
+    return head;
+}
+
+// Main function
 int main() {
-    // Create operand_1: 7 → 2 → 3 → 3
-    struct ListNode* operand_1 = createNode(7);
-    operand_1->next = createNode(2);
-    operand_1->next->next = createNode(3);
-    operand_1->next->next->next = createNode(3);
+    printf("Create operand_1:\n");
+    struct Node* operand_1 = createLinkedList();
 
-    // Create operand_2: 5 → 7 → 4
-    struct ListNode* operand_2 = createNode(5);
-    operand_2->next = createNode(7);
-    operand_2->next->next = createNode(4);
+    printf("Create operand_2:\n");
+    struct Node* operand_2 = createLinkedList();
 
-    // Add the two numbers
-    struct ListNode* result = addTwoNumbers(operand_1, operand_2);
+    printf("\nOperand_1: ");
+    printList(operand_1);
 
-    // Print the result
-    printf("Result: ");
+    printf("Operand_2: ");
+    printList(operand_2);
+
+    struct Node* result = addTwoNumbers(operand_1, operand_2);
+
+    printf("\nResult: ");
     printList(result);
 
     // Free memory (cleanup)
     while (result) {
-        struct ListNode* temp = result;
+        struct Node* temp = result;
         result = result->next;
         free(temp);
     }
