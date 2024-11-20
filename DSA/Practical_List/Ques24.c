@@ -49,11 +49,15 @@ struct Node* addTwoNumbers(struct Node* l1, struct Node* l2) {
     while (l1 || l2 || carry) {
         int sum = (l1 ? l1->val : 0) + (l2 ? l2->val : 0) + carry;
         carry = sum / 10;
-        current->next = createNode(sum % 10);
+        current->next = createNode(sum % 10); 
         current = current->next;
 
-        if (l1) l1 = l1->next;
-        if (l2) l2 = l2->next;
+        if (l1){
+            l1 = l1->next;
+        }
+        if (l2){
+            l2 = l2->next;
+        }
     }
 
     struct Node* result = reverseList(dummyHead->next);

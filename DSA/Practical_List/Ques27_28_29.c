@@ -65,22 +65,25 @@ void inOrderTraversed(struct Node* root){
 
 // Function to count leaves in the binary tree
 int countLeaves(struct Node *root){
-    if(root == NULL)
+    if(root == NULL){
         return 0;
-    if(root->left == NULL && root->right == NULL)
+    }
+    if(root->left == NULL && root->right == NULL){
         return 1;
+    }
     return countLeaves(root->left) + countLeaves(root->right);
 }
 
 // Function to calculate the height of the binary tree
 int height(struct Node *root){
-    if(root == NULL)
+    if(root == NULL){
         return 0;
+    }
     int leftHeight = height(root->left);
     int rightHeight = height(root->right);
     return (leftHeight > rightHeight ? leftHeight : rightHeight) + 1;
 }
-
+    
 int main(){
     int i, n;
 

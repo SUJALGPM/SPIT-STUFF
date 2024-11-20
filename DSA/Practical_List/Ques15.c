@@ -45,60 +45,6 @@ struct Node *searchNode(struct Node *root,int key){
     }
 }
 
-// Function to find the in-order predecessor (largest node in the left subtree)
-struct Node *predecessor(struct Node *root){
-    struct Node *curr = root->left;
-    while(!curr && !curr->right){
-        curr = curr->right;
-    }
-
-    return curr;
-}
-
-// Function to find the in-order successor (smallest node in the right subtree)
-struct Node *successor(struct Node *root){
-    struct Node *curr = root->right;
-    while(!curr && !curr->left){
-        curr = curr->left;
-    }
-
-    return curr;
-}
-
-struct Node *DeleteNode(struct Node* root, int key){
-
-    //base condition...
-    if(root == NULL){
-        return root;
-    }
-
-    //search in subtree..
-    if(key < root->key){ //20 < 30
-        root->left = DeleteNode(root->left,key); // 30,20
-    }else if(key > root->key){
-        root->right = DeleteNode(root->right,key);
-    }else{
-        //case when root has no child or only right child...
-        if(root->left == NULL){
-            struct Node *temp  = root->right;
-            free(root);
-            return temp;
-        }
-
-        //case when root has no child or only left child.
-        if(root->right == NULL){
-            struct Node *temp = root->left;
-            free(root);
-            return temp;
-        }
-
-        struct Node *succ = successor(root);
-        root->key = succ->key;
-        root->right = DeleteNode(root->right,succ->key);
-    }
-
-    return root;
-}
 
 void Preorder(struct Node *root){
     if(root == NULL){
@@ -142,8 +88,7 @@ int main(){
         printf("3. Postorder Traversal\n");
         printf("4. Inorder Traversal\n");
         printf("5. Searching in BST\n");
-        printf("6. Delete Element\n");
-        printf("7. Exit\n");
+        printf("6. Exit\n");
         printf("Enter your choice: ");
         scanf("%d", &choice);
 
@@ -184,19 +129,11 @@ int main(){
         }
             break;
         case 6:
-        {
-            int element;
-            printf("Enter element you want to delete :\n");
-            scanf("%d",&element);
-            DeleteNode(root,element);
-        }
-            break;
-        case 7:
             break;
         default:
             break;
         }
-    }while (choice != 7);
+    }while (choice != 6);
     
     return 0;
 }

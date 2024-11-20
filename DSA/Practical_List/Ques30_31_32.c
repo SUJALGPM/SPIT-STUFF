@@ -1,4 +1,7 @@
-// 15. Write a program to construct a binary search tree and traverse it with all methods that uses recursion.
+// 30. Construct a Binary search tree and get the minimum and maximum key in the tree. 
+// 31. Construct a binary search tree and get the predecessor of the given node. 
+// 32. Construct a binary search tree and get the successor of the given node.
+
 
 #include <stdio.h>
 #include <stdlib.h>
