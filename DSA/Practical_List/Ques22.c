@@ -100,8 +100,7 @@ void printArray(int* arr, int n) {
     printf("\n");
 }
 
-// Menu-driven function
-void menuDriven() {
+int main() {
     MinHeap heap;
     int choice, value, n, i;
 
@@ -163,9 +162,5 @@ void menuDriven() {
                 printf("Invalid choice. Please try again.\n");
         }
     } while (choice != 5);
-}
-
-int main() {
-    menuDriven();
     return 0;
 }
